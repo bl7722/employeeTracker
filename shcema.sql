@@ -21,7 +21,24 @@ CREATE TABLE employee(
 id INT NOT NULL AUTO_INCREMENT,
 first_name VARCHAR(30) NOT NULL,
 last_name VARCHAR(30) NOT NULL,
+role VARCHAR(30) NOT NULL,
 role_id INT,
+manager VARCHAR(30),
 manager_id INT,
 PRIMARY KEY (id)
 );
+
+
+
+SELECT dep_name
+FROM department
+JOIN emp_role
+ON department.id = emp_role.department_id;
+
+SELECT title, salary , department_id
+FROM emp_role
+JOIN employee
+ON emp_role.id = employee.role_id;
+
+SELECT * FROM employee;
+

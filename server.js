@@ -12,23 +12,24 @@ const connection = mysql.createConnection({
 connection.connect(function(err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId + "\n");
-    tracker(); //app
-  });
-//var to const
-  function tracker() {
-      viewFullData();
-      const emp = [];
-      const role = [];
-      getData();
-  }
+    tracker();
+});
 
-inquirer.prompt(
-    {
-        type:"list",
-        name:"task",
-        message:"Select Task",
-        choices: ["Add New Data", "View Current Data", "Update Employee Roles", "Exit"]
-    }
+  function tracker(){
+        viewFullData();
+        getData();
+        const employees = [];
+        const roles = [];
+    
+
+// First Question
+    inquirer.prompt(
+        {
+            type:"list",
+            message:"Select Task",
+            name:"task",
+            choices: ["Add New Data", "View Current Data", "Update Employee Roles", "Exit"]
+        }
 ).then(function(response){
     
     if(response.command === "Add New Data"){
@@ -54,7 +55,7 @@ inquirer.prompt(
             };
         });
     };
-
+//Viewable
     if(response.command === "View Current Data"){
        inquirer.prompt(
            {
@@ -80,27 +81,35 @@ inquirer.prompt(
         };
     });
 };
-           if(response.command === "Update Employee Roles"){
-               updateEmp();
-           }
-
-           if(response.command === "Exit"){
-               exit();
-           }
+//Updates
+        if(response.command === "Update Employee Roles"){
+            updateEmp();
+        }
+//Exit
+        if(response.command === "Exit"){
+            exit();
+        }
 
 });
 
+
+
+
+//Functions
+
+// Departments
 function newDep() {
     inquirer.prompt(
         {
-            name:"newDept",
+            type: input,
+            name:"newDep",
             message:"New Department Name?",
         }
     ).then(function(newInfo){
         var query = connection.query(
         "INSERT INTO department SET ?",
         {
-            dep_name: newInfo.newDept
+            dep_name: newInfo.newDep
         },
         function(err, res) {
             if (err) throw err;
@@ -112,17 +121,21 @@ function newDep() {
     })
 };
 
+//Roles
 function newRole() {
     inquirer.prompt([
         {
+            type: input,
             name:"newRole",
             message:"New Role Name?",
         },
         {
+            type: input,
             name:"newSal",
             message:"New Salary Amount?",
         },
         {
+            type: input,
             name:"newDeptId",
             message:"New Department ID?",
         }
@@ -132,8 +145,8 @@ function newRole() {
     "INSERT INTO emp_rol SET ?",
     {
         title: newInfo.newRole,
-        salary: newInfo.newPay,
-        department_id: newInfo.newDeptid
+        salary: newInfo.newSal,
+        department_id: newInfo.newDeptId
     },
     function(err, res) {
         if (err) throw err;
@@ -144,17 +157,21 @@ function newRole() {
 });
 };
 
+//New Employees
 function newEmp() {
     inquirer.prompt([
         {
+            type:input,
             name:"first",
             message:"New Employee First Name?",
         },
         {
+            type:input,
             name:"last",
             message:"New Employee Last Name?",
         },
         {
+            type:input,
             name:"role",
             message:"New Employee Role?",
         },
@@ -182,6 +199,9 @@ function newEmp() {
 });
 };
 
+
+
+//Departments Data
 function viewDeps() {
     connection.query("SELECT * FROM department", function(err, res) {
     if (err) throw err;
@@ -190,6 +210,27 @@ function viewDeps() {
     });
 }
 
+//Roles Data
+function viewRoles() {
+    connection.query("SELECT * FROM emp_role", function(err, res) {
+    if (err) throw err;
+    console.table(res);
+    restart();
+    });
+}
+
+
+
+//Employees Data
+function viewEmps() {
+    connection.query("SELECT * FROM employee", function(err, res) {
+    if (err) throw err;
+    console.table(res);
+    restart();
+    });
+
+
+//viewFullData
 function viewFullData() {
     connection.query(`
     SELECT title, salary , department_id
@@ -201,5 +242,91 @@ function viewFullData() {
     console.log("---------------------------------------------------------------------------")
     console.table(res);
     });
+}
 
-    
+
+//updateEmp
+function updateEmp() {
+    inquirer.prompt([
+        {
+            type:"list",
+            message:"Who's updating?",
+            name:"person",
+            choices: employees
+        },
+        {
+            type:"list",
+            message:"New Role?",
+            name:"newRole",
+            choices: roles
+        }
+]).then(function(newInfo){ 
+        var query = connection.query(
+        "UPDATE employee SET ? WHERE ?",
+        [
+        {
+            role: newInfo.newRole
+        },
+        {
+            first_name: newInfo.person
+        }
+        ],
+        function(err, res) {
+        if (err) throw err;
+        console.log(res.affectedRows + " employee updated!\n");
+        readEmployees();
+        }
+    );
+});
+
+}
+
+
+//Reset
+function restart(){
+    inquirer.prompt(
+        {
+            type:"confirm",
+            name:"confirm",
+            message:"All Done?"
+
+        }
+    ).then(function(reboot){
+        if (reboot.confirm === true){
+            tracker();
+        }
+        else{
+            exit();
+        }
+    })
+}
+//getData
+function getData(){
+    function origRoles() {
+        connection.query("SELECT title FROM emp_role", function(err, res) {
+        if (err) throw err; 
+        for(let i=0; i<res.length; i++){
+        roles.push(res[i].title);
+        };
+        });
+    }
+    function origEmps() {
+        connection.query("SELECT first_name FROM employee", function(err, res) {
+        if (err) throw err;
+        for(let i=0; i<res.length; i++){  
+        employees.push(res[i].first_name);
+        }
+        });
+    }
+    origRoles();
+    origEmps();
+}
+};
+
+//Exit
+function exit(){
+    console.log("Exited Successfully")
+    connection.end()
+    return;
+    }
+}
