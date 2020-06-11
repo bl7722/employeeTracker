@@ -15,18 +15,19 @@ connection.connect(function(err) {
     tracker(); //app
   });
 //var to const
-  tracker()=> {
-    const emp = [];
-    const role = [];
-
+  function tracker() {
+      viewData();
+      const emp = [];
+      const role = [];
+      getData();
   }
 
 inquirer.prompt(
     {
-    type:"list",
-    name:"task",
-    message:"Select Task",
-    choices: ["Add New Data", "View Current Data", "Update Employee Roles", "Exit"]
+        type:"list",
+        name:"task",
+        message:"Select Task",
+        choices: ["Add New Data", "View Current Data", "Update Employee Roles", "Exit"]
     }
 ).then(function(response){
     
@@ -34,13 +35,13 @@ if(response.command === "Add New Data){
 
 inquirer.prompt(
     {
-    type:"list",
-    name:"addNewData",
-    message: "Where Adding?",
-    choices: ["Departments", "Roles", "Employees"]
+        type:"list",
+        name:"addNewData",
+        message: "Where Adding?",
+        choices: ["Departments", "Roles", "Employees"]
     }
     ).then(function(selection){
-    
+        
         if(selection.addNewData === "Departments"){
             newDep();
         }
@@ -54,3 +55,45 @@ inquirer.prompt(
         };
     });
 };
+
+if(response.command === "View Current Data"){
+    inquirer.prompt(
+        {
+            type:"list",
+            name:"table",
+            message:"Which Data?",
+            choices:["Departments", "Roles", "Employees","All"]
+        }
+    ).then(function(decision){
+        if(decision.table === "Departments"){
+            viewDeps();
+            };
+
+            if(decision.table === "Roles"){
+            viewRoles();
+            };
+
+            if(decision.table === "Employees"){
+            viewEmps();
+            };
+            
+            if(decision.table === "All"){
+            viewAll();
+            restart();
+            
+        };
+        });
+        };
+
+
+
+        if(response.command === "Update Employee Roles"){
+            updateEmp();
+        }
+
+        if(response.command === "Exit"){
+            exit();
+        }
+
+});
+
