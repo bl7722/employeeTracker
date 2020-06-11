@@ -96,11 +96,11 @@ function newDep() {
             name:"newDept",
             message:"New Department Name?",
         }
-    ).then(function(newName){
+    ).then(function(newInfo){
         var query = connection.query(
         "INSERT INTO department SET ?",
         {
-            dep_name: newName.newDept
+            dep_name: newInfo.newDept
         },
         function(err, res) {
             if (err) throw err;
@@ -126,14 +126,14 @@ function newRole() {
             name:"newDeptId",
             message:"New Department ID?",
         }
-    ]).then(function(newName){
+    ]).then(function(newInfo){
     
     const query = connection.query(
     "INSERT INTO emp_rol SET ?",
     {
-        title: newName.newRole,
-        salary: newName.newPay,
-        department_id: newName.newDeptid
+        title: newInfo.newRole,
+        salary: newInfo.newPay,
+        department_id: newInfo.newDeptid
     },
     function(err, res) {
         if (err) throw err;
@@ -143,3 +143,49 @@ function newRole() {
     viewRoles();
 });
 };
+
+function newEmp() {
+    inquirer.prompt([
+        {
+            name:"first",
+            message:"New Employee First Name?",
+        },
+        {
+            name:"last",
+            message:"New Employee Last Name?",
+        },
+        {
+            name:"role",
+            message:"New Employee Role?",
+        },
+        {
+            type:"list",
+            name:"manager",
+            message:"New Employee manager?",
+            choices: employees
+        }
+    ]).then(function(newInfo){
+    var query = connection.query(
+    "INSERT INTO employee SET ?",
+    {
+        first_name: newInfo.first,
+        last_name: newInfo.last,
+        role: newInfo.role,
+        manager: newInfo.manager,
+    },
+    function(err, res) {
+        if (err) throw err;
+        console.log(res.affectedRows + " Roles created!\n");
+    }
+    );
+    viewEmps();
+});
+};
+
+function viewDeps() {
+    connection.query("SELECT * FROM department", function(err, res) {
+    if (err) throw err;
+    console.table(res);
+    restart();    
+    });
+}
