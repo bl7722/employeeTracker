@@ -12,12 +12,12 @@ const connection = mysql.createConnection({
 connection.connect(function(err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId + "\n");
-    tracker();
+    tracker(); //app
   });
 //var to const
   tracker()=> {
-    var emp = [];
-    var role = [];
+    const emp = [];
+    const role = [];
 
   }
 
@@ -39,3 +39,18 @@ inquirer.prompt(
     message: "Where Adding?",
     choices: ["Departments", "Roles", "Employees"]
     }
+    ).then(function(selection){
+    
+        if(selection.addNewData === "Departments"){
+            newDep();
+        }
+
+        if(selection.addNewData === "Roles"){
+            newRole();
+        }
+
+        if(selection.addNewData === "Employees"){
+            newEmp();
+        };
+    });
+};
