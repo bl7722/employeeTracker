@@ -16,7 +16,7 @@ connection.connect(function(err) {
   });
 //var to const
   function tracker() {
-      viewData();
+      viewFullData();
       const emp = [];
       const role = [];
       getData();
@@ -74,7 +74,7 @@ inquirer.prompt(
                 viewEmps();
             };
             if(decision.table === "All"){
-                viewAll();
+                viewFullData();
                 restart();
                
         };
@@ -189,3 +189,17 @@ function viewDeps() {
     restart();    
     });
 }
+
+function viewFullData() {
+    connection.query(`
+    SELECT title, salary , department_id
+    FROM emp_role
+    JOIN employee
+    ON emp_role.id = employee.role_id;`, function(err, res) {
+    if (err) throw err;
+    console.log("")
+    console.log("---------------------------------------------------------------------------")
+    console.table(res);
+    });
+
+    
