@@ -96,23 +96,18 @@ function tracker(){
 });
 
 
-
-
-//Functions
-
-// Departments
+//New Departments
 function newDep() {
     inquirer.prompt(
         {
-            type: input,
-            name:"newDep",
+            name:"newDepartment",
             message:"New Department Name?",
         }
     ).then(function(newInfo){
-        var query = connection.query(
-        "INSERT INTO department SET ?",
+        const query = connection.query(
+            "INSERT INTO department SET ?",
         {
-            dep_name: newInfo.newDep
+            dep_name: newInfo.newDepartment
         },
         function(err, res) {
             if (err) throw err;
