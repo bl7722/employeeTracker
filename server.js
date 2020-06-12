@@ -119,116 +119,72 @@ function newDep() {
     })
 };
 
-//Roles
-function newRole() {
-    inquirer.prompt([
-        {
-            type: input,
-            name:"newRole",
-            message:"New Role Name?",
-        },
-        {
-            type: input,
-            name:"newSal",
-            message:"New Salary Amount?",
-        },
-        {
-            type: input,
-            name:"newDeptId",
-            message:"New Department ID?",
-        }
-    ]).then(function(newInfo){
-    
-    const query = connection.query(
-    "INSERT INTO emp_rol SET ?",
-    {
-        title: newInfo.newRole,
-        salary: newInfo.newSal,
-        department_id: newInfo.newDeptId
-    },
-    function(err, res) {
-        if (err) throw err;
-        console.log(res.changedRows + " Roles created!\n");
-    }
-    );
-    viewRoles();
-});
-};
-
 //New Employees
 function newEmp() {
     inquirer.prompt([
         {
-            type:input,
+            type: input,
             name:"first",
             message:"New Employee First Name?",
         },
         {
-            type:input,
+            type: input,
             name:"last",
             message:"New Employee Last Name?",
         },
         {
-            type:input,
+            type: input,
             name:"role",
             message:"New Employee Role?",
         },
         {
             type:"list",
             name:"manager",
-            message:"New Employee manager?",
-            choices: employees
+            message:"New Employee Manager?",
+            choices:employees
         }
     ]).then(function(newInfo){
-    var query = connection.query(
-    "INSERT INTO employee SET ?",
+    const query = connection.query(
+        "INSERT INTO employee SET ?",
     {
         first_name: newInfo.first,
         last_name: newInfo.last,
-        role: newInfo.role,
-        manager: newInfo.manager,
+        role_name : newInfo.role,
+        manager_name : newInfo.manager,
     },
     function(err, res) {
         if (err) throw err;
-        console.log(res.affectedRows + " Roles created!\n");
+        console.log(res.changedRows + " roles created!\n");
     }
     );
     viewEmps();
 });
 };
 
-
-
 //Departments Data
 function viewDeps() {
     connection.query("SELECT * FROM department", function(err, res) {
-    if (err) throw err;
-    console.table(res);
-    restart();    
+        if (err) throw err;
+        console.table(res);
+        restart();    
     });
 }
-
 //Roles Data
 function viewRoles() {
     connection.query("SELECT * FROM emp_role", function(err, res) {
-    if (err) throw err;
-    console.table(res);
-    restart();
+        if (err) throw err;
+        console.table(res);
+        restart();
     });
 }
-
-
-
 //Employees Data
 function viewEmps() {
     connection.query("SELECT * FROM employee", function(err, res) {
-    if (err) throw err;
-    console.table(res);
-    restart();
+        if (err) throw err;
+        console.table(res);
+        restart();
     });
-
-
-//viewFullData
+}//viewFullData
 function viewFullData() {
     connection.query(`
     SELECT title, salary , department_id

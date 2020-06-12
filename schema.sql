@@ -36,3 +36,16 @@ INSERT INTO emp_role(title,salary,department_id)
 VALUES ("salesperson",10000,1), ("accounting",20000,2), ("lawyer",30000,3);
 
 
+
+
+SELECT dep_name
+FROM department
+JOIN emp_role
+ON department.id=emp_role.department_id;
+
+SELECT title, salary , department_id
+FROM emp_role
+JOIN employee
+ON emp_role.id=employee.role_id;
+
+SELECT * FROM employee;
