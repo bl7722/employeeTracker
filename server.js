@@ -184,51 +184,51 @@ function viewEmps() {
         console.table(res);
         restart();
     });
-}//viewFullData
+}
+//View Full Data
 function viewFullData() {
     connection.query(`
-    SELECT title, salary , department_id
-    FROM emp_role
-    JOIN employee
-    ON emp_role.id = employee.role_id;`, function(err, res) {
-    if (err) throw err;
-    console.log("")
-    console.log("---------------------------------------------------------------------------")
-    console.table(res);
+            SELECT title, salary , department_id
+            FROM emp_role
+            JOIN employee
+            ON emp_role.id = employee.role_id;`, function(err, res) {
+        if (err) throw err;
+        console.log("")
+        console.log("----------------------")
+        console.table(res);
     });
 }
-
 
 //updateEmp
 function updateEmp() {
     inquirer.prompt([
         {
             type:"list",
-            message:"Who's updating?",
             name:"person",
+            message: "Who's updating?",
             choices: employees
         },
         {
             type:"list",
-            message:"New Role?",
             name:"newRole",
+            message:"New Role?",
             choices: roles
         }
 ]).then(function(newInfo){ 
-        var query = connection.query(
+    const query = connection.query(
         "UPDATE employee SET ? WHERE ?",
         [
-        {
-            role: newInfo.newRole
-        },
-        {
-            first_name: newInfo.person
-        }
+            {
+                role_name: newInfo.newRole
+            },
+            {
+                first_name: newInfo.person
+            }
         ],
         function(err, res) {
         if (err) throw err;
-        console.log(res.affectedRows + " employee updated!\n");
-        readEmployees();
+        console.log(res.changedRows + " employees updated!\n");
+        viewEmps();
         }
     );
 });
