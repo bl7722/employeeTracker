@@ -57,30 +57,33 @@ function tracker(){
 
 //Viewable
     if(response.command === "View Current Data"){
-       inquirer.prompt(
-           {
-               type:"list",
-               name:"table",
-               message:"Which Data?",
-               choices:["Departments", "Roles", "Employees","All"]
-           }
-       ).then(function(decision){
-           if(decision.table === "Departments"){
-               viewDeps();
-        }
-           if(decision.table === "Roles"){
-               viewRoles();
+        inquirer.prompt(
+            {
+                type:"list",
+                name:"table",
+                message:"Which Data?",
+                choices:["Departments", "Roles", "Employees","All"]
             }
-            if(decision.table === "Employees"){
-                viewEmps();
-            };
-            if(decision.table === "All"){
-                viewFullData();
-                restart();
-               
+        ).then(function(decision){
+
+
+    if(decision.table === "Departments"){
+            viewDeps();
+        };
+
+    if(decision.table === "Roles"){
+            viewRoles();
+        };
+
+    if(decision.table === "Employees"){
+            viewEmps();
+        };
+    if(decision.table === "All"){
+            viewFullData();
+            restart();
         };
     });
-};
+    };
 //Updates
         if(response.command === "Update Employee Roles"){
             updateEmp();
