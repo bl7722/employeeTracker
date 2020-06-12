@@ -85,13 +85,13 @@ function tracker(){
     });
     };
 //Updates
-        if(response.command === "Update Employee Roles"){
+    if(response.command === "Update Employee Roles"){
             updateEmp();
         }
 //Exit
-        if(response.command === "Exit"){
-            exit();
-        }
+    if(response.command === "Exit"){
+        exit();
+    }
 
 });
 
