@@ -22,15 +22,15 @@ function tracker(){
     const roles = [];
 
 // First Question
-    inquirer.prompt(
-        {
-            type:"list",
-            message:"Select Task",
-            name:"task",
-            choices: ["Add New Data", "View Current Data", "Update Employee Roles", "Exit"]
-        }
+        inquirer.prompt(
+    {
+        type:"list",
+        message:"Select Task",
+        name:"command",
+        choices: ["Add New Data", "View Current Data", "Update Employee Roles","Exit"]
+    }
 ).then(function(response){
-    
+
     if(response.command === "Add New Data"){
         inquirer.prompt(
             {
@@ -38,22 +38,23 @@ function tracker(){
                 name:"addNewData",
                 message: "Where Adding?",
                 choices: ["Departments", "Roles", "Employees"]
-            }   
+            }
         ).then(function(selection){
 
-            if(selection.addNewData === "Departments"){
-                newDep();
-            }
+    if(selection.addNewData === "Departments"){
+            newDep();
+        };
 
-            if(selection.addNewData === "Roles"){
-                newRole();
-            }
+    if(selection.addNewData === "Roles"){
+            newRole();
+        };
 
-            if(selection.addNewData === "Employees"){
-                newEmp();
-            };
-        });
+    if(selection.addNewData === "Employees"){
+            newEmp();
+        };
+    });
     };
+
 //Viewable
     if(response.command === "View Current Data"){
        inquirer.prompt(
