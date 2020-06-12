@@ -36,7 +36,12 @@ INSERT INTO emp_role(title,salary,department_id)
 VALUES ("salesperson",10000,1), ("accounting",20000,2), ("lawyer",30000,3);
 
 
-
+INSERT INTO employee (first_name, last_name, role_name, manager_name, role_id, manager_id)
+VALUES
+("Shaggy","Rogers","salesperson","N/A",1,0), 
+("Fred","Jones","accounting","Yes", 2,1), 
+("Scoby","Doo","lawyer","N/A",3,0)
+("N/A","N/A","N/A","N/A",0,0);
 
 SELECT dep_name
 FROM department
