@@ -41,7 +41,7 @@ VALUES
 ("Shaggy","Rogers","salesperson","N/A",1,0), 
 ("Fred","Jones","accounting","Yes", 2,1), 
 ("Scoby","Doo","lawyer","N/A",3,0),
-("N/A","N/A","N/A","N/A",0,0);
+("Velma","Dinkley","accounting","N/A",4,0);
 
 SELECT dep_name
 FROM department

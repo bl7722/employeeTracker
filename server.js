@@ -111,7 +111,7 @@ function newDep() {
         },
         function(err, res) {
             if (err) throw err;
-            console.log(res.changedRows + " Roles created!\n");
+            console.log(res.affectedRows + " Departments created!\n");
             
         }
     );
@@ -119,21 +119,56 @@ function newDep() {
     })
 };
 
+//New Roles
+function newRole() {
+    inquirer.prompt([
+        {
+            
+            name:"newRole",
+            message:"New Role Name?"
+        },
+        {
+            
+            name:"newSal",
+            message:"New Salary Amount?"
+        },
+        {
+            
+            name:"newDepartmentId",
+            message:"New Department ID?"
+        }
+    ]).then(function(newInfo){
+    const query = connection.query(
+        "INSERT INTO emp_role SET ?",
+    {
+        title: newInfo.newRole,
+        salary: newInfo.newSal,
+        department_id: newInfo.newDepartmentId
+    },
+    function(err, res) {
+        if (err) throw err;
+        console.log(res.affectedRows + "Roles created!\n");
+    }
+    );
+    viewRoles();
+});
+};
+
 //New Employees
 function newEmp() {
     inquirer.prompt([
         {
-            type: input,
+            
             name:"first",
             message:"New Employee First Name?",
         },
         {
-            type: input,
+            
             name:"last",
             message:"New Employee Last Name?",
         },
         {
-            type: input,
+            
             name:"role",
             message:"New Employee Role?",
         },
@@ -154,7 +189,7 @@ function newEmp() {
     },
     function(err, res) {
         if (err) throw err;
-        console.log(res.changedRows + " roles created!\n");
+        console.log(res.affectedRows + " employees created!\n");
     }
     );
     viewEmps();
@@ -227,7 +262,7 @@ function updateEmp() {
         ],
         function(err, res) {
         if (err) throw err;
-        console.log(res.changedRows + " employees updated!\n");
+        console.log(res.affectedRows + " employees updated!\n");
         viewEmps();
         }
     );
