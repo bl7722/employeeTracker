@@ -242,7 +242,7 @@ function restart(){
         {
             type:"confirm",
             name:"confirm",
-            message:"All Done?"
+            message:"Anything Else?"
 
         }
     ).then(function(reboot){
@@ -254,33 +254,33 @@ function restart(){
         }
     })
 }
-//getData
+
+//Starting Data
 function getData(){
-    function origRoles() {
+    function origViewRoles() {
         connection.query("SELECT title FROM emp_role", function(err, res) {
-        if (err) throw err; 
-        for(let i=0; i<res.length; i++){
-        roles.push(res[i].title);
+            if (err) throw err; 
+            for(let i=0; i<res.length; i++){
+            roles.push(res[i].title);
         };
         });
     }
-    function origEmps() {
+    function origViewEmps() {
         connection.query("SELECT first_name FROM employee", function(err, res) {
-        if (err) throw err;
-        for(let i=0; i<res.length; i++){  
-        employees.push(res[i].first_name);
+            if (err) throw err;
+            for(let i=0; i<res.length; i++){  
+            employees.push(res[i].first_name);
         }
         });
     }
-    origRoles();
-    origEmps();
+    origViewRoles();
+    origViewEmps();
 }
 };
 
 //Exit
 function exit(){
-    console.log("Exited Successfully")
+    console.log("Exited Successfully!")
     connection.end()
     return;
-    }
-}
+};
