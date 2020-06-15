@@ -1,3 +1,4 @@
+//Run schema.sql file first!
 const inquirer = require("inquirer");
 const mysql = require("mysql");
 
@@ -5,6 +6,7 @@ const connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
   user: "root",
+  //use personal password
   password: "brandonSwim1!",
   database: "tracker_db"
 });
